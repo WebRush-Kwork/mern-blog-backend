@@ -7,7 +7,11 @@ import {
 	loginValidation,
 	postCreateValidation,
 } from './validations.js'
-import { UserController, PostController } from './controllers/index.js'
+import {
+	UserController,
+	PostController,
+	CommentController,
+} from './controllers/index.js'
 import { handleValidationErrors, checkAuth } from './utils/index.js'
 
 const app = express()
@@ -34,7 +38,7 @@ mongoose
 	.then(() => console.log('DB Ok'))
 	.catch(err => console.log('DB Error', err))
 
-app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
+app.post('/upload', upload.single('image'), (req, res) => {
 	res.json({
 		url: `/uploads/${req.file.originalname}`,
 	})
@@ -73,6 +77,13 @@ app.patch(
 	handleValidationErrors,
 	PostController.update
 )
+
+// Comments
+app.get('/comment', CommentController.getComments)
+app.get('/comment/last', CommentController.getLastComments)
+app.delete('/comment/:id', CommentController.removeComment)
+app.delete('/comment', CommentController.removeAllComments)
+app.post('/comment', checkAuth, CommentController.createComment)
 
 app.listen(4444, err => {
 	if (err) {
