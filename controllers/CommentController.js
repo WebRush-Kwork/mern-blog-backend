@@ -46,3 +46,33 @@ export const removeComment = async (req, res) => {
 		})
 	}
 }
+
+export const getLastComments = async (req, res) => {
+	try {
+		const comments = await CommentSchema.find()
+			.limit(5)
+			.sort({ createdAt: -1 })
+			.populate('user')
+			.exec()
+
+		res.json(comments)
+	} catch (err) {
+		console.log(err)
+		res.status(500).json({
+			message: 'Не удалось получить последние комментарии',
+		})
+	}
+}
+
+export const removeAllComments = async (req, res) => {
+	try {
+		const comments = await CommentSchema.deleteMany()
+
+		res.json(comments)
+	} catch (err) {
+		console.log(err)
+		res.status(500).json({
+			message: 'Не удалось удалить все комментарии',
+		})
+	}
+}

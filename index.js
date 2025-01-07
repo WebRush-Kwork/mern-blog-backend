@@ -80,7 +80,9 @@ app.patch(
 
 // Comments
 app.get('/comment', CommentController.getComments)
+app.get('/comment/last', CommentController.getLastComments)
 app.delete('/comment/:id', CommentController.removeComment)
+app.delete('/comment', CommentController.removeAllComments)
 app.post('/comment', checkAuth, CommentController.createComment)
 
 app.listen(4444, err => {
