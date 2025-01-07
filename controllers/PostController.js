@@ -1,4 +1,3 @@
-// homework branch
 import PostScheme from '../models/Post.js'
 
 export const getAll = async (req, res) => {
